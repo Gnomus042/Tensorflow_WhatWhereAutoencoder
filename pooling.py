@@ -39,7 +39,7 @@ def unpool(pool, ind, ksize=[1, 2, 2, 1], scope='unpool'):
        Return:
            unpool:    unpooling tensor
     """
-    with tf.variable_scope(scope):
+    with tf.compat.v1.variable_scope(scope):
         input_shape = tf.shape(pool)
         output_shape = [input_shape[0], input_shape[1] * ksize[1], input_shape[2] * ksize[2], input_shape[3]]
 
