@@ -104,7 +104,7 @@ def upsample(net, stride, mode='ZEROS'):
 
 # Keras layers for pooling and unpooling
 
-
+@tf.keras.utils.register_keras_serializable()
 class MaxPoolingWithArgmax2D(Layer):
     def __init__(
             self,
@@ -144,7 +144,17 @@ class MaxPoolingWithArgmax2D(Layer):
     def compute_mask(self, inputs, mask=None):
         return 2 * [None]
 
+    def get_config(self):
 
+        config = super().get_config().copy()
+        config.update({
+            'pool_size': self.pool_size,
+            'strides': self.strides,
+            'padding': self.padding
+        })
+        return config
+
+@tf.keras.utils.register_keras_serializable()
 class MaxUnpooling2D(Layer):
     def __init__(self, up_size=(2, 2), **kwargs):
         super(MaxUnpooling2D, self).__init__(**kwargs)
@@ -165,6 +175,12 @@ class MaxUnpooling2D(Layer):
             mask_shape[3]
         )
 
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'up_size': self.up_size
+        })
+        return config
 
 # Test implementation
 
